@@ -1,0 +1,34 @@
+# .gitignore
+
+# Entornos virtuales
+venv/
+ENV/
+env/
+.venv/
+
+# Configuraciones sensibles
+.env
+
+# Archivos de Python compilados
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Archivos de caché o temporales
+*.log
+*.pot
+*.mo
+*.swp
+*.swo
+*.tmp
+
+# Configuración de editores
+.vscode/
+.idea/
+.DS_Store
+*.sublime-project
+*.sublime-workspace
+
+# Archivos del sistema
+Thumbs.db
+ehthumbs.db
