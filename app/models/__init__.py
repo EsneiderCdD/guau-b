@@ -1,1 +1,2 @@
-from .perro import Perro, SolicitudAdopcion
+from .perro import Perro
+from .solicitud_adopcion import SolicitudAdopcion

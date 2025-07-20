@@ -13,7 +13,7 @@ def create_app():
 
     # 3. Cargar configuración basada en FLASK_ENV
     env_config = os.getenv("FLASK_ENV", "development").capitalize() + "Config"
-    app.config.from_object(f"config.config.{env_config}")
+    app.config.from_object(f"config.{env_config}")
 
     # 4. Inicializar extensiones
     db.init_app(app)
