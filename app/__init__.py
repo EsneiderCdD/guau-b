@@ -19,9 +19,11 @@ def create_app():
     # 4. Inicializar SQLAlchemy con el app
     db.init_app(app)
 
-    # 5. Registrar Blueprint
+    # 5. Registrar Blueprints
     from app.routes.perros import perros_bp
+    from app.routes.adopciones import adopciones_bp
     app.register_blueprint(perros_bp)
+    app.register_blueprint(adopciones_bp)
 
     # 6. Ruta raíz
     @app.route('/')
