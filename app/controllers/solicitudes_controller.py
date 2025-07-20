@@ -1,26 +1,37 @@
 from flask import jsonify
 from app.models import Perro, SolicitudAdopcion
 from app.extensions import db
+from app.utils.validators import validate_solicitud_data 
 
 def crear_solicitud(data):
-    id_perro = data.get('id_perro')
-    nombre_usuario = data.get('nombre_usuario')
-    mensaje = data.get('mensaje')
+    try:
+        # Validación explícita
+        errores = validate_solicitud_data(data)
+        if errores:
+            return jsonify({'errores': errores}), 400
 
-    if not id_perro or not nombre_usuario:
-        return jsonify({'error': 'Faltan campos obligatorios'}), 400
+        id_perro = int(data['id_perro'])  # ya validado como número
 
-    perro = Perro.query.get(id_perro)
-    if not perro or perro.estado != 'disponible':
-        return jsonify({'error': 'Perro no disponible'}), 400
+        # Buscar el perro
+        perro = Perro.query.get(id_perro)
+        if not perro:
+            return jsonify({'error': 'El perro no existe.'}), 404
 
-    solicitud = SolicitudAdopcion(
-        nombre_usuario=nombre_usuario,
-        mensaje=mensaje,
-        perro_id=id_perro
-    )
+        if perro.estado != 'disponible':
+            return jsonify({'error': 'El perro no está disponible para adopción.'}), 400
 
-    db.session.add(solicitud)
-    db.session.commit()
+        solicitud = SolicitudAdopcion(
+            nombre_usuario=data['nombre_usuario'],
+            mensaje=data['mensaje'],
+            perro_id=id_perro
+        )
 
-    return jsonify({'mensaje': 'Solicitud creada exitosamente'}), 201
+        db.session.add(solicitud)
+        db.session.commit()
+
+        return jsonify({'mensaje': 'Solicitud creada exitosamente'}), 201
+
+    except Exception as e:
+        # Para producción puedes loguearlo mejor
+        return jsonify({'error': 'Error inesperado en el servidor.', 'detalle': str(e)}), 500
+
