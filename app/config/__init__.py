@@ -1,28 +1,30 @@
-# config/config.py
-
-import os
+from flask import Flask
 from dotenv import load_dotenv
+import os
 
-# Carga las variables desde .env
+# 1. Cargar variables de entorno desde .env
 load_dotenv()
 
-class Config:
-    SECRET_KEY = os.environ.get("SECRET_KEY", "default-secret-key")
-    DATABASE_URI = os.environ.get("DATABASE_URI", "sqlite:///default.db")
-    PORT = int(os.environ.get("PORT", 5000))
-    DEBUG = False
-    TESTING = False
+# 2. Importar extensiones
+from app.extensions import db  # si luego agregas migrate, irá aquí también
 
+def create_app():
+    app = Flask(__name__)
 
-class DevelopmentConfig(Config):
-    DEBUG = True
-    FLASK_ENV = "development"
+    # 3. Cargar configuración basada en FLASK_ENV
+    env_config = os.getenv("FLASK_ENV", "development").capitalize() + "Config"
+    app.config.from_object(f"config.config.{env_config}")
 
+    # 4. Inicializar extensiones
+    db.init_app(app)
 
-class ProductionConfig(Config):
-    FLASK_ENV = "production"
+    # 5. Registrar Blueprints
+    from app.routes.perros import perros_bp
+    app.register_blueprint(perros_bp)
 
+    # 6. Ruta raíz
+    @app.route('/')
+    def index():
+        return 'Servidor funcionando correctamente ✅'
 
-class TestingConfig(Config):
-    TESTING = True
-    FLASK_ENV = "testing"
+    return app
