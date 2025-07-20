@@ -21,9 +21,9 @@ def create_app():
 
     # 5. Registrar Blueprints
     from app.routes.perros import perros_bp
-    from app.routes.adopciones import adopciones_bp
+    from app.routes.solicitudes import solicitudes_bp
     app.register_blueprint(perros_bp)
-    app.register_blueprint(adopciones_bp)
+    app.register_blueprint(solicitudes_bp)
 
     # 6. Ruta raíz
     @app.route('/')
