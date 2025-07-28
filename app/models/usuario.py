@@ -13,7 +13,7 @@ class Usuario(db.Model):
     nombre = db.Column(db.String(50), unique=True, nullable=False)
 
     # Contraseña en forma de hash
-    password_hash = db.Column(db.String(128), nullable=False)
+    password_hash = db.Column(db.String(256), nullable=False)
 
     # Rol del usuario ('admin' por defecto)
     rol = db.Column(db.String(20), default='admin')
