@@ -9,7 +9,7 @@ class Perro(db.Model):
     raza = db.Column(db.String(100), nullable=False)
     edad = db.Column(db.Integer, nullable=False)
     descripcion = db.Column(db.Text)
-    estado = db.Column(db.String(20), default='disponible')
+    estado = db.Column(db.String(20), default='disponible')  
     imagen_url = db.Column(db.String(255))
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
