@@ -16,7 +16,7 @@ class Usuario(db.Model):
     password_hash = db.Column(db.String(256), nullable=False)
 
     # Rol del usuario ('admin' por defecto)
-    rol = db.Column(db.String(20), default='admin')
+    rol = db.Column(db.String(20), default='user')  # ya no "admin"
 
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
