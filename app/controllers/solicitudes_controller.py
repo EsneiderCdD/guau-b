@@ -10,12 +10,10 @@ def crear_solicitud(data):
     perro_id = data.get('perro_id')
     mensaje = data.get('mensaje')
 
-    # Verificar que el perro exista
     perro = Perro.query.get(perro_id)
     if not perro:
         return jsonify({'error': 'Perro no encontrado'}), 404
 
-    # Verificar si ya existe una solicitud pendiente del mismo usuario y perro
     solicitud_existente = SolicitudAdopcion.query.filter_by(
         usuario_id=usuario_id,
         perro_id=perro_id,
@@ -29,7 +27,6 @@ def crear_solicitud(data):
         perro_id=perro_id,
         mensaje=mensaje
     )
-
     db.session.add(nueva_solicitud)
     db.session.commit()
 
@@ -42,3 +39,43 @@ def crear_solicitud(data):
             'estado': nueva_solicitud.estado
         }
     }), 201
+
+# NUEVO
+def obtener_solicitudes():
+    solicitudes = SolicitudAdopcion.query.all()
+    resultado = []
+    for s in solicitudes:
+        resultado.append({
+            'id': s.id,
+            'usuario_id': s.usuario_id,
+            'perro_id': s.perro_id,
+            'estado': s.estado,
+            'mensaje': s.mensaje,
+            'created_at': s.created_at.isoformat()
+        })
+    return jsonify(resultado), 200
+
+# NUEVO
+def obtener_solicitud_por_id(solicitud_id):
+    solicitud = SolicitudAdopcion.query.get(solicitud_id)
+    if not solicitud:
+        return jsonify({'error': 'Solicitud no encontrada'}), 404
+
+    return jsonify({
+        'id': solicitud.id,
+        'usuario_id': solicitud.usuario_id,
+        'perro_id': solicitud.perro_id,
+        'estado': solicitud.estado,
+        'mensaje': solicitud.mensaje,
+        'created_at': solicitud.created_at.isoformat()
+    }), 200
+
+# NUEVO
+def eliminar_solicitud(solicitud_id):
+    solicitud = SolicitudAdopcion.query.get(solicitud_id)
+    if not solicitud:
+        return jsonify({'error': 'Solicitud no encontrada'}), 404
+
+    db.session.delete(solicitud)
+    db.session.commit()
+    return jsonify({'mensaje': 'Solicitud eliminada'}), 200
