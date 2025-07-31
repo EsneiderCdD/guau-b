@@ -1,37 +1,44 @@
 from flask import jsonify
-from app.models import Perro, SolicitudAdopcion
+from app.models.solicitud_adopcion import SolicitudAdopcion
+from app.models.perro import Perro
 from app.extensions import db
-from app.utils.validators import validate_solicitud_data 
+from flask_jwt_extended import get_jwt_identity
+from app.models.usuario import Usuario
 
 def crear_solicitud(data):
-    try:
-        # Validación explícita
-        errores = validate_solicitud_data(data)
-        if errores:
-            return jsonify({'errores': errores}), 400
+    usuario_id = get_jwt_identity()
+    perro_id = data.get('perro_id')
+    mensaje = data.get('mensaje')
 
-        id_perro = int(data['id_perro'])  # ya validado como número
+    # Verificar que el perro exista
+    perro = Perro.query.get(perro_id)
+    if not perro:
+        return jsonify({'error': 'Perro no encontrado'}), 404
 
-        # Buscar el perro
-        perro = Perro.query.get(id_perro)
-        if not perro:
-            return jsonify({'error': 'El perro no existe.'}), 404
+    # Verificar si ya existe una solicitud pendiente del mismo usuario y perro
+    solicitud_existente = SolicitudAdopcion.query.filter_by(
+        usuario_id=usuario_id,
+        perro_id=perro_id,
+        estado='pendiente'
+    ).first()
+    if solicitud_existente:
+        return jsonify({'error': 'Ya enviaste una solicitud pendiente para este perro.'}), 400
 
-        if perro.estado != 'disponible':
-            return jsonify({'error': 'El perro no está disponible para adopción.'}), 400
+    nueva_solicitud = SolicitudAdopcion(
+        usuario_id=usuario_id,
+        perro_id=perro_id,
+        mensaje=mensaje
+    )
 
-        solicitud = SolicitudAdopcion(
-            nombre_usuario=data['nombre_usuario'],
-            mensaje=data['mensaje'],
-            perro_id=id_perro
-        )
+    db.session.add(nueva_solicitud)
+    db.session.commit()
 
-        db.session.add(solicitud)
-        db.session.commit()
-
-        return jsonify({'mensaje': 'Solicitud creada exitosamente'}), 201
-
-    except Exception as e:
-        # Para producción puedes loguearlo mejor
-        return jsonify({'error': 'Error inesperado en el servidor.', 'detalle': str(e)}), 500
-
+    return jsonify({
+        'mensaje': 'Solicitud enviada con éxito',
+        'solicitud': {
+            'id': nueva_solicitud.id,
+            'usuario_id': usuario_id,
+            'perro_id': perro_id,
+            'estado': nueva_solicitud.estado
+        }
+    }), 201
