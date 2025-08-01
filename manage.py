@@ -8,6 +8,7 @@ from app.extensions import db
 from app.models.perro import Perro
 from app.models.solicitud_adopcion import SolicitudAdopcion
 from app.models.usuario import Usuario
+from app.models.producto import Producto
 
 app = create_app()
 migrate = Migrate(app, db)
