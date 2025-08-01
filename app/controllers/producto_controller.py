@@ -4,6 +4,7 @@ from flask import jsonify, request
 from app.models.producto import Producto
 from app.extensions import db
 from app.schemas.producto_schema import serialize_producto, parsear_producto_data
+from flask_jwt_extended import get_jwt_identity, verify_jwt_in_request
 
 def obtener_productos():
     productos = Producto.query.all()
@@ -38,3 +39,28 @@ def eliminar_producto(producto_id):
     db.session.delete(producto)
     db.session.commit()
     return jsonify({"mensaje": "Producto eliminado"}), 200
+
+def comprar_producto():
+    verify_jwt_in_request()  # Solo usuarios logueados
+
+    data = request.get_json()
+    producto_id = data.get("producto_id")
+    cantidad = data.get("cantidad", 1)
+
+    if not producto_id or cantidad <= 0:
+        return jsonify({"error": "Datos inválidos"}), 400
+
+    producto = Producto.query.get(producto_id)
+    if not producto:
+        return jsonify({"error": "Producto no encontrado"}), 404
+
+    if producto.stock < cantidad:
+        return jsonify({"error": "Stock insuficiente"}), 400
+
+    producto.stock -= cantidad
+    db.session.commit()
+
+    return jsonify({
+        "mensaje": "Compra realizada",
+        "producto": serialize_producto(producto)
+    }), 200
