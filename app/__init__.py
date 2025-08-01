@@ -29,11 +29,13 @@ def create_app():
     # 6. Registrar Blueprints
     from app.routes.perros import perros_bp
     from app.routes.solicitudes import solicitudes_bp
-    from app.routes.auth import auth_bp  # 👈 NUEVO
+    from app.routes.auth import auth_bp  
+    from app.routes.productos_routes import productos_bp  # Importar rutas de productos
     
     app.register_blueprint(perros_bp)
     app.register_blueprint(solicitudes_bp)
-    app.register_blueprint(auth_bp)  # 👈 NUEVO
+    app.register_blueprint(auth_bp) 
+    app.register_blueprint(productos_bp)
 
     # 7. Ruta de prueba
     @app.route('/')
