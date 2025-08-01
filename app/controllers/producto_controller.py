@@ -29,3 +29,12 @@ def crear_producto():
         return jsonify({"error": str(e)}), 400
     except Exception as e:
         return jsonify({"error": "Error inesperado al crear producto"}), 500
+    
+def eliminar_producto(producto_id):
+    producto = Producto.query.get(producto_id)
+    if not producto:
+        return jsonify({"error": "Producto no encontrado"}), 404
+
+    db.session.delete(producto)
+    db.session.commit()
+    return jsonify({"mensaje": "Producto eliminado"}), 200
