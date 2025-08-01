@@ -10,3 +10,20 @@ def serialize_producto(producto):
         "imagen_url": producto.imagen_url,
         "created_at": producto.created_at.isoformat()
     }
+
+# 👇 Nueva función: validación y extracción de datos desde un dict
+def parsear_producto_data(data):
+    nombre = data.get("nombre")
+    precio = data.get("precio")
+    stock = data.get("stock")
+
+    if not nombre or precio is None or stock is None:
+        raise ValueError("Faltan campos obligatorios: nombre, precio, stock")
+
+    return {
+        "nombre": nombre,
+        "descripcion": data.get("descripcion", ""),
+        "precio": precio,
+        "stock": stock,
+        "imagen_url": data.get("imagen_url", "")
+    }
