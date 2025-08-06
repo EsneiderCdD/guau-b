@@ -30,7 +30,7 @@ def create_app():
     from app.routes.perros import perros_bp
     from app.routes.solicitudes import solicitudes_bp
     from app.routes.auth import auth_bp  
-    from app.routes.productos_routes import productos_bp  # Importar rutas de productos
+    from app.routes.productos_routes import productos_bp 
     from app.routes.match_routes import match_bp
 
     app.register_blueprint(perros_bp)
