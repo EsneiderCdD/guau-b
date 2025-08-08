@@ -30,6 +30,10 @@ def crear_perro():
     raza = data.get("raza")
     descripcion = data.get("descripcion")
     imagen_url = data.get("imagen_url")
+    tiempo_requerido = data.get("tiempo_requerido")
+    requiere_experiencia = data.get("requiere_experiencia")
+    apego_esperado = data.get("apego_esperado")
+
 
     if not nombre or not edad or not raza:
         return jsonify({'error': 'Faltan campos obligatorios'}), 400
@@ -40,7 +44,10 @@ def crear_perro():
         raza=raza,
         descripcion=descripcion,
         imagen_url=imagen_url,
-        estado='disponible'
+        estado='disponible',
+        tiempo_requerido=tiempo_requerido,
+        requiere_experiencia=requiere_experiencia,
+        apego_esperado=apego_esperado
     )
 
     db.session.add(nuevo_perro)
