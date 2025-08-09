@@ -13,9 +13,9 @@ class Perro(db.Model):
     descripcion = db.Column(db.Text)
     estado = db.Column(db.String(20), default='disponible')  
     imagen_url = db.Column(db.String(255))
+    imagen_card_uno = db.Column(db.String(255), nullable=True)
+    imagen_card_dos = db.Column(db.String(255), nullable=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
-
-    # 🔽 Nuevas columnas (constructivistas, no obligatorias)
     tiempo_requerido = db.Column(db.Integer, nullable=True)  
     requiere_experiencia = db.Column(db.Integer, nullable=True)  
     apego_esperado = db.Column(db.Integer, nullable=True)  
