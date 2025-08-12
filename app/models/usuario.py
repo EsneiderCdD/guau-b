@@ -8,12 +8,9 @@ class Usuario(db.Model):
     __tablename__ = 'usuarios'
 
     id = db.Column(db.Integer, primary_key=True)
-    # Nombre simple (tipo nickname)
     nombre = db.Column(db.String(50), unique=True, nullable=False)
-    # Contraseña en forma de hash
     password_hash = db.Column(db.String(256), nullable=False)
-    # Rol del usuario ('admin' por defecto)
-    rol = db.Column(db.String(20), default='user')  # ya no "admin"
+    rol = db.Column(db.String(20), default='user') 
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
     def __repr__(self):

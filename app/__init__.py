@@ -32,12 +32,14 @@ def create_app():
     from app.routes.auth import auth_bp  
     from app.routes.productos_routes import productos_bp 
     from app.routes.match_routes import match_bp
+    from app.routes.perro_routes import perro_bp    
 
     app.register_blueprint(perros_bp)
     app.register_blueprint(solicitudes_bp)
     app.register_blueprint(auth_bp) 
     app.register_blueprint(productos_bp)
     app.register_blueprint(match_bp)
+    app.register_blueprint(perro_bp)
     
 
     # 7. Ruta de prueba
