@@ -7,16 +7,18 @@ class MatchUsuario(db.Model):
     __tablename__ = 'match_usuarios'
 
     id = db.Column(db.Integer, primary_key=True)
-
     usuario_id = db.Column(db.Integer, db.ForeignKey('usuarios.id'), nullable=False)
 
-    tiempo_disponible = db.Column(db.Integer, nullable=False)        # 1–3
-    experiencia = db.Column(db.Integer, nullable=False)              # 0–1
-    apego_emocional = db.Column(db.Integer, nullable=False)          # 0–2
+    # ---- 4 dimensiones (0–4) ----
+    energia = db.Column(db.Float, nullable=True)
+    apego_vinculo = db.Column(db.Float, nullable=True)
+    regulacion_emocional = db.Column(db.Float, nullable=True)
+    exploracion_libertad = db.Column(db.Float, nullable=True)
 
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
-    # Relaciones (opcional, útil para acceso directo desde Usuario)
+    # Relaciones
     usuario = db.relationship('Usuario', backref='matchs')
 
     def __repr__(self):
