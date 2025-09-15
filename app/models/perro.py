@@ -16,9 +16,15 @@ class Perro(db.Model):
     imagen_card_uno = db.Column(db.String(255), nullable=True)
     imagen_card_dos = db.Column(db.String(255), nullable=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    tiempo_requerido = db.Column(db.Integer, nullable=True)  
-    requiere_experiencia = db.Column(db.Integer, nullable=True)  
-    apego_esperado = db.Column(db.Integer, nullable=True)  
+
+ 
+    energia = db.Column(db.Float, nullable=True)
+    apego_vinculo = db.Column(db.Float, nullable=True)
+    regulacion_emocional = db.Column(db.Float, nullable=True)
+    exploracion_libertad = db.Column(db.Float, nullable=True)
+
+    
+    datos_fisicos = db.Column(db.JSON, nullable=True)
 
     def __repr__(self):
         return f"<Perro {self.nombre}>"
