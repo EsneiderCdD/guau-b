@@ -7,7 +7,6 @@ def get_perros():
     perros_disponibles = Perro.query.filter_by(estado="disponible").all()
     perros_serializados = [serialize_perro(p) for p in perros_disponibles]
     return jsonify(perros_serializados), 200
-
 def actualizar_perro(perro_id, data):
     perro = Perro.query.get(perro_id)
     if not perro:
@@ -16,7 +15,8 @@ def actualizar_perro(perro_id, data):
     campos = [
         "nombre", "raza", "edad", "descripcion", "estado",
         "imagen_url", "imagen_card_uno", "imagen_card_dos",
-        "tiempo_requerido", "requiere_experiencia", "apego_esperado"
+        "energia", "apego_vinculo", "regulacion_emocional",
+        "exploracion_libertad", "datos_fisicos"
     ]
     
     for campo in campos:

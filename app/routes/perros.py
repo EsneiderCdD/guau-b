@@ -18,7 +18,6 @@ def obtener_perro_por_id(perro_id):
     if not perro:
         return jsonify({'error': 'Perro no encontrado'}), 404
     return jsonify(serialize_perro(perro)), 200
-
 @perros_bp.route('/', methods=['POST'])
 @jwt_required()
 @admin_required
@@ -30,11 +29,8 @@ def crear_perro():
     raza = data.get("raza")
     descripcion = data.get("descripcion")
     imagen_url = data.get("imagen_url")
-    imagen_card_uno = data.get("imagen_card_uno")  # Nuevo
-    imagen_card_dos = data.get("imagen_card_dos")  # Nuevo
-    tiempo_requerido = data.get("tiempo_requerido")
-    requiere_experiencia = data.get("requiere_experiencia")
-    apego_esperado = data.get("apego_esperado")
+    imagen_card_uno = data.get("imagen_card_uno")
+    imagen_card_dos = data.get("imagen_card_dos")
 
     if not nombre or not edad or not raza:
         return jsonify({'error': 'Faltan campos obligatorios'}), 400
@@ -48,9 +44,11 @@ def crear_perro():
         imagen_card_uno=imagen_card_uno,
         imagen_card_dos=imagen_card_dos,
         estado='disponible',
-        tiempo_requerido=tiempo_requerido,
-        requiere_experiencia=requiere_experiencia,
-        apego_esperado=apego_esperado
+        energia=data.get("energia"),
+        apego_vinculo=data.get("apego_vinculo"),
+        regulacion_emocional=data.get("regulacion_emocional"),
+        exploracion_libertad=data.get("exploracion_libertad"),
+        datos_fisicos=data.get("datos_fisicos")
     )
 
     db.session.add(nuevo_perro)
