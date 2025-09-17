@@ -7,7 +7,7 @@ class MatchUsuario(db.Model):
     __tablename__ = 'match_usuarios'
 
     id = db.Column(db.Integer, primary_key=True)
-    usuario_id = db.Column(db.Integer, db.ForeignKey('usuarios.id'), nullable=False)
+    usuario_id = db.Column(db.Integer, db.ForeignKey('usuarios.id'), nullable=False, unique=True)
 
     # ---- Dimensiones principales (0–4) ----
     energia = db.Column(db.Float, nullable=True)
@@ -21,7 +21,7 @@ class MatchUsuario(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
-    usuario = db.relationship('Usuario', backref='matchs')
+    usuario = db.relationship('Usuario', backref=db.backref('match_usuario', uselist=False))
 
     def __repr__(self):
         return f"<MatchUsuario usuario_id={self.usuario_id}>"

@@ -16,3 +16,18 @@ def serialize_perro(perro):
         "exploracion_libertad": perro.exploracion_libertad,
         "datos_fisicos": perro.datos_fisicos
     }
+
+def serialize_match_usuario(perfil):
+    if perfil is None:
+        return None
+    return {
+        "id": perfil.id,
+        "usuario_id": perfil.usuario_id,
+        "energia": perfil.energia,
+        "apego_vinculo": perfil.apego_vinculo,
+        "regulacion_emocional": perfil.regulacion_emocional,
+        "exploracion_libertad": perfil.exploracion_libertad,
+        "datos_fisicos": perfil.datos_fisicos,
+        "created_at": perfil.created_at.isoformat() if perfil.created_at else None,
+        "updated_at": perfil.updated_at.isoformat() if perfil.updated_at else None
+    }
