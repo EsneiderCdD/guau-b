@@ -32,3 +32,5 @@ __pycache__/
 # Archivos del sistema
 Thumbs.db
 ehthumbs.db
+
+.env
